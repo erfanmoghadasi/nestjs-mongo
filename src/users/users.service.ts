@@ -16,6 +16,7 @@ export class UsersService {
 
   async createUser(createUserDto: CreateUserDto) {
     const { settings, ...restCreateUserDto } = createUserDto;
+
     if (settings) {
       const userSettings = new this.userSettingModel(settings);
       const savedNewSettings = await userSettings.save();
@@ -25,6 +26,7 @@ export class UsersService {
       });
       return newUser.save();
     }
+
     const newUser = new this.userModel(restCreateUserDto);
     return newUser.save();
   }
@@ -34,7 +36,7 @@ export class UsersService {
   }
 
   getUserById(id: string) {
-    return this.userModel.findById(id).populate('settings');
+    return this.userModel.findById(id).populate(['settings', 'posts']);
   }
 
   updateUser(id: string, updateUserDto: UpdateUserDto) {
